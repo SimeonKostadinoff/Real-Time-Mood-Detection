@@ -460,13 +460,25 @@
 
         function addNewRows(parentNodeId) {
             var row1 = $("#video-row1"),
-                row2 = $("#video-row2");
+                row2 = $("#video-row2"),
+                emotionToolbar = $("<div/>", {
+                  id: 'emotionToolbarRow',
+                  "class": "emotionRow",
+                  css: {
+                    margin: "1em",
+                    backgroundColor: "white"
+                  }
+                });
             if (row1 && row1.length === 0) {
                 $("#" + parentNodeId).append("<div id='video-row1' class='row'></div>");
+                $("#" + parentNodeId).append(emotionToolbar);
+                emotionToolbar.append($("<button id='emotionBtn' class='emotionBtn'>Capture Emotion</button>"));
             }
 
             if (row2 && row2.length === 0) {
-                $("#" + parentNodeId).append("<div id='video-row2' class='row'></div>");
+                $("#" + parentNodeId).append("<div id='video-row2' class='row'></div>", {
+                  css: {marginTop: "1em"}
+                });
             }
         }
 
@@ -564,33 +576,35 @@
                 displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
 
                 // row 2
-                displayStream("agora-local", localStream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
-                addPlaceholderDiv("video-row2", size.width, size.height);
+                displayStream("agora-local", localStream, size.width, size.height, "remote-partner-video-multiple col-offset-sm-3 col-sm-6", "video-row2");
+                // addPlaceholderDiv("video-row2", size.width, size.height);
             } else if (remoteStreamList.length === 3) {
                 clearAllStream();
                 addNewRows("video-container-multiple");
                 size = calculateVideoSize(true);
 
                 // row 1
-                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
-                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
+                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-4", "video-row1");
+                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-4", "video-row1");
+                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-4", "video-row1");
 
                 // row 2
-                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
-                displayStream("agora-local", localStream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
+                displayStream("agora-local", localStream, size.width, size.height, "remote-partner-video-multiple col-offset-sm-3 col-sm-6", "video-row2");
             } else if (remoteStreamList.length === 4) {
                 clearAllStream();
                 addNewRows("video-container-multiple");
                 size = calculateVideoSize(true);
 
                 // row 1
-                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
-                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
+                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
+                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
 
-                // row 2
-                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
+                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
                 remoteStreamList[3].stream.enableVideo();
-                displayStream("agora-remote", remoteStreamList[3].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
+                displayStream("agora-remote", remoteStreamList[3].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
+                // row 2
+                displayStream("agora-local", localStream, size.width, size.height, "remote-partner-video-multiple col-offset-sm-3 col-sm-6", "video-row2");
+
             } else {
                 removeStream('agora-remote', streamId);
             }
@@ -642,8 +656,8 @@
 
                 displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
                 displayStream("agora-remote", stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
-                displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple col-sm-6', "video-row2");
-                addPlaceholderDiv("video-row2", size.width, size.height);
+                displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple  col-offset-sm-3 col-sm-6', "video-row2");
+                // addPlaceholderDiv("video-row2", size.width, size.height);
 
                 toggleFullscreenButton(false);
                 toggleExpensionButton(false);
@@ -655,31 +669,33 @@
                 // row 1
                 displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
                 displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
+                // displayStream("agora-remote", stream, size.width, size.height, 'remote-partner-video-multiple col-sm-6', 'video-row2');
                 // row 2
-                displayStream("agora-remote", stream, size.width, size.height, 'remote-partner-video-multiple col-sm-6', 'video-row2');
-                displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple col-sm-6', "video-row2");
+                displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple col-offset-sm-3 col-sm-6', "video-row2");
+
             } else if (remoteStreamList.length === 3) {
                 clearAllStream();
                 addNewRows("video-container-multiple");
                 size = calculateVideoSize(true);
 
                 // row 1
-                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
-                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
+                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-4", "video-row1");
+                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-4", "video-row1");
+                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-4", "video-row1");
                 // row 2
-                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
-                displayStream("agora-remote", stream, size.width, size.height, 'remote-partner-video-multiple col-sm-6', 'video-row2');
+                displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple col-offset-sm-3 col-sm-6', "video-row2");
             } else if (remoteStreamList.length === 4) {
                 clearAllStream();
                 addNewRows("video-container-multiple");
                 size = calculateVideoSize(true);
 
                 // row 1
-                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
-                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
+                displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
+                displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
+                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
+                displayStream("agora-remote", remoteStreamList[3].stream, size.width, size.height, "remote-partner-video-multiple col-sm-3", "video-row1");
                 // row 2
-                displayStream("agora-remote", remoteStreamList[2].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
-                displayStream("agora-remote", remoteStreamList[3].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row2");
+                displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple col-offset-sm-3 col-sm-6', "video-row2");
 
                 // we only allow 4 vidwo streams to display at the same time
                 createAudioContainer();
@@ -745,7 +761,7 @@
                 } else {
                     videoSize = calculateVideoSize(true);
                 }
-                resizeStreamOnPage(videoSize);
+                // resizeStreamOnPage(videoSize);
             });
         }
 
@@ -773,7 +789,7 @@
                 displayStream("agora-remote", remoteStreamList[0].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
                 displayStream("agora-remote", remoteStreamList[1].stream, size.width, size.height, "remote-partner-video-multiple col-sm-6", "video-row1");
                 displayStream("agora-local", localStream, size.width, size.height, 'remote-partner-video-multiple col-sm-6', "video-row2");
-                addPlaceholderDiv("video-row2", size.width, size.height);
+                // addPlaceholderDiv("video-row2", size.width, size.height);
 
                 toggleFullscreenButton(false);
                 toggleExpensionButton(false);
